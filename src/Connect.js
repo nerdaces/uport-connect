@@ -422,7 +422,7 @@ class Connect {
   /**
    *  Create and send a verification (credential) about connnected user. Verification is signed by
    *  temporary session keys created by Connect. If you want to create a verification with a different
-   *  keypair/did use uPort credentials and send it with the Connect send function.
+   *  keypair/did, use uPort credentials and send it with the Connect send function.
    *
    *  @example
    *  connect.sendVerification({
