@@ -16,7 +16,7 @@ Make sure you have the uPort application installed on your mobile device. Afterw
 git clone https://github.com/uport-project/uport-connect
 cd uport-connect
 npm install
-npm run build-dist
+npm run build:dist
 ```
 
 We will be working in the `uport-connect/examples/integration-tutorial` directory.
