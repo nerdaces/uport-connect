@@ -31,6 +31,8 @@
             <tr><td><span>ETH Address: </span><span id="ethAddress"></span></td></tr>
             <tr><td><span>ETH Balance: </span><span id="ethBalance"></span></td></tr>
             <tr><td><span>Current Status: </span><span id="currentStatus"></span></td></tr>
+            <tr><td><span>Your name: </span><span id="yourName"></span></td></tr>
+            <tr><td><span>Your birthday: </span><span id="yourAge"></span></td></tr>
           </tbody>
         </table>
         <button class="btn btn-sm btn-primary" id="connectUportBtn" onclick="uportConnect()">Connect uPort</button>
@@ -78,6 +80,42 @@
           </tbody>
         </table>
       </section>
+      <section>
+        <h2>Create Verified Credential for Your Infomation</h2>
+        <table>
+          <tbody>
+            <tr>
+              <td><input type="text" id="nameInput" size="20" placeholder="Keisuke Honda" onchange="updateState()"/></td>
+              <td><input type="text" id="birthdayInput" size="20" placeholder="1986/06/13" onchange="updateState()"/></td>
+              <td><button class="btn btn-sm btn-success" onclick="updateState();render()">Set your info</button></td>
+              <td><button class="btn btn-sm btn-success" onclick="createVerifiedCredential()">Create VC</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      <section>
+        <h2>Create Verified Credential for Adults</h2>
+        <table>
+          <tbody>
+            <tr>
+              <td><button class="btn btn-sm btn-success" onclick="createVerifiedCredentialForAdult()">Create VC</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+      <section>
+        <h2>Verification</h2>
+        <table>
+          <tbody>
+            <tr>
+              <td><button class="btn btn-sm btn-success" onclick="verifyYourAdultness()">Verify</button></td>
+            </tr>
+            <tr>
+              <td><span>Are you an adult? </span><span id="flagAdult"></span></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
     </main>
     <script>
       // State and render functions
@@ -89,10 +127,14 @@
         ethBalance: "",
         currentStatus: "",
         statusInput: "",
+        nameInput: "",
+        birthdayInput: "",
+        age: "",
         txHashSentEth: "",
         txHashSetStatus: "",
         sendToAddr: "",
-        sendToVal: ""
+        sendToVal: "",
+        flagAdult: ""
       }
 
       const render = function () {
@@ -104,12 +146,17 @@
         $('#sendTo').value = globalState.sendToAddr;
         $('#amount').value = globalState.sendToVal;
         $('#currentStatus').innerHTML = globalState.currentStatus;
+        $('#yourName').innerHTML = globalState.nameInput;
+        $('#yourAge').innerHTML = globalState.age;
       }
 
       const updateState = function () {
         globalState.sendToAddr = $('#sendTo').value;
         globalState.sendToVal = $('#amount').value;
         globalState.statusInput = $('#statusInput').value;
+        globalState.nameInput = $('#nameInput').value;
+        globalState.birthdayInput = $('#birthdayInput').value;
+        globalState.age = getAgeFromBirthday(globalState.birthdayInput);
         console.log(globalState)
       }
 
