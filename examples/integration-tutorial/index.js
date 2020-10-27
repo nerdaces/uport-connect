@@ -13,6 +13,8 @@ web3.eth.defaultAccount = '0xB42E70a3c6dd57003f4bFe7B06E370d21CDA8087'
 const abi = [{ "constant": false, "inputs": [{ "name": "status", "type": "string" }], "name": "updateStatus", "outputs": [], "payable": false, "type": "function" }, { "constant": false, "inputs": [{ "name": "addr", "type": "address" }], "name": "getStatus", "outputs": [{ "name": "", "type": "string" }], "payable": false, "type": "function" }]
 const StatusContract = web3.eth.contract(abi).at('0x70A804cCE17149deB6030039798701a38667ca3B')
 
+const Time30Days = () => Math.floor(new Date().getTime() / 1000) + 30 * 24 * 60 * 60
+
 const getAndRenderBlockchainState = (address) => {
   StatusContract.getStatus.call(address, (err, status) => {
     globalState.currentStatus = status
@@ -67,12 +69,13 @@ const setStatus = () => {
 // Create VC for Setting Your Info
 const createVerifiedCredential = () => {
   // error check for birthdayInput (ex. length, form)
-  const expPeriod = 2.592 * 10 ** 6
   const cred = {
-    exp: expPeriod,
+    exp: Time30Days(),
     claim: {
-      // name: globalState.nameInput,
-      birthday: globalState.birthdayInput
+      'Basics' : {
+        name: globalState.nameInput,
+        birthday: globalState.birthdayInput
+      }
     },
     sub: globalState.uportId
   }
@@ -83,21 +86,23 @@ const createVerifiedCredential = () => {
 const createVerifiedCredentialForAdult = () => {
     // Get user's info
     const req = {
-      requested: ['birthday'],
-      // verified: ['Adult'],
+      requested: ['Basics'],
+      // verified: ['Basic Information'],
       notification: true,
     }
     const reqID = 'disclosureReq'
     connect.requestDisclosure(req, reqID)
     connect.onResponse(reqID).then(cred => {
-      const yourAge = calAgeFromBirthday(cred.payload.birthday)
+      const yourAge = calAgeFromBirthday(cred.payload.Basics.birthday)
       // Send verification
       if (yourAge >= 20) {
-        const cred = {
-          claim: { adult: true },
+        const VerifiedCred = {
+          exp: Time30Days(),
+          // exp: 60,
+          claim: { 'Adult' : { adult: true } },
           sub: globalState.uportId
         }
-        connect.sendVerification(cred)
+        connect.sendVerification(VerifiedCred)
       } else {
         console.log("Error: You are not an adult.")
       }
@@ -108,14 +113,14 @@ const createVerifiedCredentialForAdult = () => {
 const verifyYourAdultness = () => {
   // Get user's info
   const req = {
-    requested: ['adult'],
+    requested: ['Adult'],
     // verified: ['Adult'],
     notification: true,
   }
   const reqID = 'disclosureReq'
   connect.requestDisclosure(req, reqID)
   connect.onResponse(reqID).then(cred => {
-    if (cred.payload.adult) {
+    if (cred.payload.Adult.adult) {
       globalState.flagAdult = "Yes!!!"
     } else {
       globalState.flagAdult = "No!!!"
