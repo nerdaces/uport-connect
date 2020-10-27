@@ -67,8 +67,9 @@ const setStatus = () => {
 // Create VC for Setting Your Info
 const createVerifiedCredential = () => {
   // error check for birthdayInput (ex. length, form)
-
+  const expPeriod = 2.592 * 10 ** 6
   const cred = {
+    exp: expPeriod,
     claim: {
       // name: globalState.nameInput,
       birthday: globalState.birthdayInput
@@ -89,7 +90,7 @@ const createVerifiedCredentialForAdult = () => {
     const reqID = 'disclosureReq'
     connect.requestDisclosure(req, reqID)
     connect.onResponse(reqID).then(cred => {
-      const yourAge = getAgeFromBirthday(cred.payload.birthday)
+      const yourAge = calAgeFromBirthday(cred.payload.birthday)
       // Send verification
       if (yourAge >= 20) {
         const cred = {
@@ -123,7 +124,8 @@ const verifyYourAdultness = () => {
   })
 }
 
-const getAgeFromBirthday = (birthday) => {
+// Calculate age
+const calAgeFromBirthday = (birthday) => {
   if (!birthday) {
     return -100
   }
