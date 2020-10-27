@@ -36,6 +36,7 @@
           </tbody>
         </table>
         <button class="btn btn-sm btn-primary" id="connectUportBtn" onclick="uportConnect()">Connect uPort</button>
+        <button class="btn btn-sm btn-primary" id="resetStateBtn" onclick="resetState()">Reset</button>
       </section>
       <hr/>
       <section>
@@ -158,6 +159,25 @@
         globalState.birthdayInput = $('#birthdayInput').value;
         globalState.age = calAgeFromBirthday(globalState.birthdayInput);
         console.log(globalState)
+      }
+
+      const resetState = function () {
+        globalState = {
+          uportId: "",
+          ethAddress: "",
+          ethBalance: "",
+          currentStatus: "",
+          statusInput: "",
+          nameInput: "",
+          birthdayInput: "",
+          age: "",
+          txHashSentEth: "",
+          txHashSetStatus: "",
+          sendToAddr: "",
+          sendToVal: "",
+          flagAdult: ""
+        }
+        render()
       }
 
       ////////////////////////////////////////////////
