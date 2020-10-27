@@ -122,8 +122,10 @@ const verifyYourAdultness = () => {
   connect.onResponse(reqID).then(cred => {
     if (cred.payload.Adult.adult) {
       globalState.flagAdult = "Yes!!!"
+      alert("Verification Successed: You're an Adult.")
     } else {
       globalState.flagAdult = "No!!!"
+      alert("Verification Failed: You're not an Adult.")
     }
     $('#flagAdult').innerHTML = globalState.flagAdult; // fix later
   })
