@@ -67,7 +67,7 @@ const setStatus = () => {
 }
 
 // Create VC for Setting Your Info
-const createVerifiedCredential = () => {
+const createVerifiableCredential = () => {
   // error check for birthdayInput (ex. length, form)
   const cred = {
     exp: Time30Days(),
@@ -83,7 +83,7 @@ const createVerifiedCredential = () => {
 }
 
 // Create VC for Adults
-const createVerifiedCredentialForAdult = () => {
+const createVerifiableCredentialForAdult = () => {
     // Get user's info
     const req = {
       requested: ['Basics'],
@@ -96,13 +96,13 @@ const createVerifiedCredentialForAdult = () => {
       const yourAge = calAgeFromBirthday(cred.payload.Basics.birthday)
       // Send verification
       if (yourAge >= 20) {
-        const VerifiedCred = {
+        const VerifiableCred = {
           exp: Time30Days(),
           // exp: 60,
           claim: { 'Adult' : { adult: true } },
           sub: globalState.uportId
         }
-        connect.sendVerification(VerifiedCred)
+        connect.sendVerification(VerifiableCred)
       } else {
         console.log("Error: You are not an adult.")
       }
