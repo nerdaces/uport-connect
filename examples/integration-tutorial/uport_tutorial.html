@@ -162,21 +162,10 @@
       }
 
       const resetState = function () {
-        globalState = {
-          uportId: "",
-          ethAddress: "",
-          ethBalance: "",
-          currentStatus: "",
-          statusInput: "",
-          nameInput: "",
-          birthdayInput: "",
-          age: "",
-          txHashSentEth: "",
-          txHashSetStatus: "",
-          sendToAddr: "",
-          sendToVal: "",
-          flagAdult: ""
-        }
+        connect.logout()
+        provider.address = null
+        globalState.uportId = null
+        globalState.ethAddress = null
         render()
       }
 
